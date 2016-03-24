@@ -6,10 +6,10 @@
 5. Configure DTC Firewall settings (19-20)
 6. Restart computer "
 
-$selection = Read-Host "Please enter number 1-6, enter 'EXIT' to exit"
+$selection = Read-Host "Please enter number 1-6, enter 'EXIT' to exit"  #declare the selection, do not read in value
 
 while ($selection -ge 1 -and $selection -le 6) {
-
+                                                                        #read in value here
     Switch ($selection) {
         1 {
             Write-Host "option 1"
@@ -57,7 +57,7 @@ while ($selection -ge 1 -and $selection -le 6) {
         }
             
     }
-        $selection = write-host "Please enter number 1-6, or enter 'EXIT' to exit'"
+        $selection = write-host "Please enter number 1-6, or enter 'EXIT' to exit'"    #delete
     
 }
 
