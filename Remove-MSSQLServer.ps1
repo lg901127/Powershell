@@ -1,7 +1,7 @@
 ﻿function Remove-MSSQLServer ([string]$arg) {
     #Read in specific value of a registry key:
     $v = Get-ItemProperty -Path $arg -Name DependOnService 
-    #Transfer the value to System Collections ArrayList to make it a editable array:
+    #Transfer the value to System Collections ArrayList to make it an editable array:
     $v_new = [System.Collections.ArrayList](Select-Object -InputObject $v -ExpandProperty DependOnService)
     #Remove specific value from array:
     $v_new.Remove('MSSQLServer')
