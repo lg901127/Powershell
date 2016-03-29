@@ -32,7 +32,7 @@ switch -wildcard ($hostname) {
             };
             break
         }
-    default {"No addition feature will be installed"
+    default {Write-Host "No addition feature will be installed"
         }
 }
 
@@ -42,9 +42,13 @@ while ($startInstall -ne 'YES' -and $startInstall -ne 'NO') {
     $startInstall = Read-Host -Prompt "Please enter 'Yes' or 'NO'"
 }
 if ($startInstall -eq 'YES') {
-    <#Install-WindowsFeature $installFeatures#>
-    write-host "test YES"
+    Write-Host "Installation is starting in 3 seconds"
+    Start-Sleep -Seconds 3
+    Install-WindowsFeature $installFeatures
+    
     }
 if ($startInstall -eq 'NO') {
-    Write-Host "test NO"
+    Write-Host "Powershell will exit in 3 seconds"
+    Start-Sleep -Seconds 3
+    Exit
     }

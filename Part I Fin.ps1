@@ -12,17 +12,19 @@ while ($selection -ne 'EXIT') {
     Switch ($selection) {
         1 {
             Write-Host "Interactive Services Detection service will set to start automatically."
-            set-itemproperty -Path HKLM:\system\CurrentControlSet\Services\ui0detect -Name "start" -value 2;
+            set-itemproperty -Path HKLM:\system\CurrentControlSet\Services\ui0detect -Name "start" -value 2
+            Write-Host "Interactive Services Detection service has been set to start automatically";
             break
         }
         2 {
             Write-Host "SMTP Service will set to start automatically."
-            Set-Service -Name SMTPSVC -StartupType Automatic;
+            Set-Service -Name SMTPSVC -StartupType Automatic
+            Write-Host "SMTP Service has been set to start automatically.";
             break
         }
         3 {
-            Write-Host "Creating SafetyLine event log"
-            New-EventLog -LogName SafetyLine -Source WebApp;
+            New-EventLog -LogName SafetyLine -Source WebApp
+            Write-Host "SafetyLine event log has been created";
             break
         }
         4 {
@@ -32,7 +34,9 @@ while ($selection -ne 'EXIT') {
             Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC\Security -Name NetworkDtcAccessOutbound -Value 1
             Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC\Security -Name NetworkDtcAccessClients -Value 1
             Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC\Security -Name NetworkDtcAccessInbound -Value 1
-            Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC\Security -Name NetworkDtcAccessAdmin -Value 1;
+            Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC\Security -Name NetworkDtcAccessAdmin -Value 1
+            Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC -Name AllowOnlySecureRpcCalls -Value 0
+            Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC -Name TurnOffRpcSecurity -Value 1;
             break
         }
         5 {
@@ -49,7 +53,6 @@ while ($selection -ne 'EXIT') {
         }
         'EXIT' {
             Write-Host "Exit"
-            Write-Host "Powershell is about to exit"
             Start-Sleep -Seconds 3
             exit
         }
