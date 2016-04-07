@@ -4,3 +4,5 @@
     Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 0
     Write-Host "IE Enhanced Security Configuration has been disabled for administrator only."
 }
+
+Disable-InternetExplorerESC

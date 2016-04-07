@@ -14,7 +14,8 @@
 $SafetyLineMaintenance = 'HKLM:\SYSTEM\CurrentControlSet\Services\SafetyLineMaintenance'
 $SafetyLinePusher = 'HKLM:\SYSTEM\CurrentControlSet\Services\SafetyLinePusher'
 $SafetyLineSatelliteEmailService = 'HKLM:\SYSTEM\CurrentControlSet\Services\SatelliteEmailService'
-
+#SafetyLineIVRService = 'HKLM:\SYSTEM\CurrentControlSet\Services\SafetyLineIVRService'
 Remove-MSSQLServer($SafetyLineMaintenance)
 Remove-MSSQLServer($SafetyLinePusher)
 Remove-MSSQLServer($SafetyLineSatelliteEmailService)
+#Remove-MSSQLServer($SafetyLineIVRService)
