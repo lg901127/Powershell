@@ -1,10 +1,45 @@
-﻿Write-host "Please select from the following tasks:
-1. Set Interactive Services Detection service to start automatically. (10)
-2. Set SMTP Service to start automatically. (11)
-3. Create event log for SafetyLine in Event Viewer.(15)
-4. Configure Local DTC settings.(16-18)
-5. Configure DTC Firewall settings (19-20)
-6. Restart computer "
+﻿#---------------------------------------------------------------------------------------------------------------#
+#This script will make the following settings:
+#
+#1. Set the Interactive Services Detection service to start automatically. 
+#To manually configure this, go to regedit and modify the registry key:
+#HKEY_LOCAL_MACHINE_SYSTEM\SYSTEM\CurrentControlSet\Services\UI0Detect, change the "Start" value to 2.
+#
+#2. Set the SMTP Service to start automatically.
+#To manually configure this, navigate to "Services" snap-in, find "Simple Mail Transfer Protocol (SMTP)" and change its Startup Type
+#to Automatic.
+#
+#3. Create an event log source for SafetyLine in Event Viewer.
+#To manually configure this, open a Powershell window and enter command: "New-EventLog -LogName SafetyLine -Source WebApp".
+#
+#4. Setup the Distributed Transaction Coordinator. 
+#This step is critical to the entire app environment because it is responsible for distributing the various SafetyLine
+#services accross multiple servers.
+#To manually configure this, open the Local DTC within the Component Services snap-in and enable
+#"Network DTC Access" under the Security tab. 
+#Check "Allow Remote Clients" under the Client and Administration heading.
+#Check "Allow Inbound" and "Allow Outbound" and choose "No Authentication Required" under the Transaction Manager Communication
+#heading and click apply.
+#
+#5. Configure DTC Firewall Seetings.
+#To manually configure this, navigate to Windows Firewall with Advanced Security, enable the Distributed Transaction Coordinator RPC,
+#RPC-EPMAP and TCP-in inbound rules. 
+#Limit DTC dynamic port allocation by editing the registry. Navigate to 
+#HKEY_LOCAL_MACHINE\Software\Microsoft\Rpc and create a new key called "Internet". Create the following values for the new registry.
+#Name: Ports   Type: REG_MULTI_SZ   Data: 4000-5000
+#Name: PortsInternetAvailable   Type: REG_SZ   Data: Y
+#Name: UseInternetPorts   Type: REG_SZ   Data: Y
+#
+#After finish all above configurations, you need to restart the server. 
+#---------------------------------------------------------------------------------------------------------------#
+
+Write-host "Please select from the following tasks:
+1. Set Interactive Services Detection service to start automatically.
+2. Set SMTP Service to start automatically.
+3. Create event log for SafetyLine in Event Viewer.
+4. Configure Local DTC settings.
+5. Configure DTC Firewall settings.
+6. Restart computer."
 
 $selection = 0
 while ($selection -ne 'EXIT') {
@@ -41,6 +76,8 @@ while ($selection -ne 'EXIT') {
             Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC\Security -Name NetworkDtcAccessAdmin -Value 1
             Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC -Name AllowOnlySecureRpcCalls -Value 0
             Set-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\MSDTC -Name TurnOffRpcSecurity -Value 1;
+            Start-Sleep -Seconds 1
+            Write-Host "Done"
             break
         }
     #Enable the Distributed Transaction Coordinator RPC, RPC-EPMAP, TCP-in inbound rules
@@ -54,6 +91,7 @@ while ($selection -ne 'EXIT') {
             New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Rpc\Internet -Name Ports -PropertyType MultiString -Value 4000-5000
             New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Rpc\Internet -Name PortsInternetAvailable -PropertyType String -Value Y
             New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Rpc\Internet -Name UseInternetPorts -PropertyType String -Value Y;
+            Write-Host "Done"
             break
         }
     #Restart

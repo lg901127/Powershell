@@ -1,4 +1,11 @@
-﻿[string[]]$installFeatures = @()
+﻿#---------------------------------------------------------------------------------------------------------------#
+#This script installs necessary features and roles to specific servers.
+#All servers will have Web Server role and SMTP Server role.
+#For web server VM-WEB(#), it will install ASP.NET 4.5 feature and IIS Management Console feature.
+#For SQL server VM-SQL(#), it will install FTP Server role and .NET Framework 3.5 feature. 
+#Open Server Manager and use Add roles and features wizard to manually install features and roles.
+#---------------------------------------------------------------------------------------------------------------#
+[string[]]$installFeatures = @()
 $hostname = hostname
 
 #Install Web Server
@@ -18,7 +25,9 @@ switch -wildcard ($hostname) {
     *SQL* {
         if ((Get-WindowsFeature Web-Ftp-Server).installed -eq 0) {
             $installFeatures += "Web-Ftp-Server"
+            $installFeatures += "NET-Framework-core"
             Write-Host "FTP Server feature will be installed"
+            Write-Host ".NET Framework 3.5 will be installed"
             };
             break
         }
@@ -26,14 +35,16 @@ switch -wildcard ($hostname) {
     *WEB* {
         if ((Get-WindowsFeature Web-Asp-Net45).installed -eq 0) {
             $installFeatures += "Web-Asp-Net45"
+            $installFeatures += "Web-Mgmt-Console"
             Write-Host "ASP.NET 4.5 feature will be installed"
+            Write-Host "IIS Management Console will be installed"
             };
             break
         }
-    #Test case
+    #Testing case
     *TEST* {
         if ((Get-WindowsFeature Web-Asp-Net45).installed -eq 0) {
-            Write-Host "This is the test case"
+            Write-Host "This is a testing case"
             };
             break
         }
